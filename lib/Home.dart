@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:youtube/views/EmAlta.dart';
+import 'package:youtube/views/Incricoes.dart';
+import 'package:youtube/views/Inicio.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -6,8 +9,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  int _indiceAtual = 0;
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> telas = [
+      Inicio(),
+      EmAlta(),
+      Inscricoes(),
+      EmAlta(),
+    ];
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.grey, opacity: 1),
@@ -33,7 +45,29 @@ class _HomeState extends State<Home> {
               onPressed: () => {print("acao: conta")})
         ],
       ),
-      body: Container(),
+      body: telas[_indiceAtual],
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _indiceAtual,
+          onTap: (indice) {
+            setState(() {
+              _indiceAtual = indice;
+            });
+          },
+          type: BottomNavigationBarType.fixed,
+          fixedColor: Colors.red,
+          items: [
+            BottomNavigationBarItem(
+                title: Text("Inicio"), icon: Icon(Icons.home)),
+            BottomNavigationBarItem(
+                title: Text("Em Alta"), icon: Icon(Icons.whatshot)),
+            BottomNavigationBarItem(
+                title: Text("Inscrições"),
+                icon: Icon(
+                  Icons.subscriptions,
+                )),
+            BottomNavigationBarItem(
+                title: Text("biblioteca"), icon: Icon(Icons.folder)),
+          ]),
     );
   }
 }
