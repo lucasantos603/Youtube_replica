@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:youtube/search/CustomSearchDelegate.dart';
 import 'package:youtube/views/EmAlta.dart';
 import 'package:youtube/views/Incricoes.dart';
 import 'package:youtube/views/Inicio.dart';
@@ -10,11 +11,12 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _indiceAtual = 0;
+  String _resultado = '';
 
   @override
   Widget build(BuildContext context) {
     List<Widget> telas = [
-      Inicio(),
+      Inicio(_resultado),
       EmAlta(),
       Inscricoes(),
       EmAlta(),
@@ -35,17 +37,29 @@ class _HomeState extends State<Home> {
         // ),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.videocam),
-              onPressed: () => {print("acao: videocam")}),
-          IconButton(
               icon: Icon(Icons.search),
-              onPressed: () => {print("acao: pesquisa")}),
-          IconButton(
-              icon: Icon(Icons.account_circle),
-              onPressed: () => {print("acao: conta")})
+              onPressed: () async {
+                String res = await showSearch(
+                    context: context, delegate: CustomSearchDelegate());
+                setState(() {
+                  _resultado = res;
+                });
+                print("resultado Digitado: " + res);
+              }),
+
+          // IconButton(
+          //     icon: Icon(Icons.videocam),
+          //     onPressed: () => {print("acao: videocam")}),
+
+          // IconButton(
+          //     icon: Icon(Icons.account_circle),
+          //     onPressed: () => {print("acao: conta")})
         ],
       ),
-      body: telas[_indiceAtual],
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: telas[_indiceAtual],
+      ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
           onTap: (indice) {
